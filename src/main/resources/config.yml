@@ -1,0 +1,8 @@
+settings:
+  request-expiration-days: 3
+  invitation-expiration-days: 3
+  max-team-name-length: 16
+  min-team-name-length: 3
+  default-pvp: false
+  tablist-tag-enabled: true
+  tablist-tag-format: ' &8┃ &7{team}'
