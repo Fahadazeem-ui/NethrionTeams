@@ -1,5 +1,5 @@
 name: NethrionTeams
-version: '2.1.0'
+version: '2.2.0'
 main: com.nethrion.teams.NethrionTeamsPlugin
 api-version: '1.21'
 author: Nethrion
@@ -9,6 +9,8 @@ commands:
     description: Manage your team.
     usage: /team
     aliases: [teams]
+
+softdepend: [ProtocolLib]
 permissions:
   nethrionteams.team:
     default: true

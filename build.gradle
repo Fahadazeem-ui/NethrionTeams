@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.nethrion'
-version = '2.1.0'
+version = '2.2.0'
 
 repositories {
     maven {
@@ -29,5 +29,5 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 jar {
-    archiveFileName = 'NethrionTeams-2.1.0.jar'
+    archiveFileName = 'NethrionTeams-2.2.0.jar'
 }
