@@ -1,55 +1,10 @@
 package com.nethrion.teams;
-
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.UUID;
-
+import net.kyori.adventure.text.*;import net.kyori.adventure.text.format.*;import org.bukkit.entity.Player;import org.bukkit.plugin.java.JavaPlugin;
 public final class TeamDisplay {
-    private final JavaPlugin plugin;
-    private final TeamManager manager;
-    private final boolean enabled;
-    private final String marker;
-    private BukkitTask refreshTask;
-
-    public TeamDisplay(JavaPlugin plugin, TeamManager manager) {
-        this.plugin = plugin;
-        this.manager = manager;
-        this.enabled = plugin.getConfig().getBoolean("settings.tablist-tag-enabled", true);
-        this.marker = ChatColor.DARK_GRAY + "┃ " + ChatColor.GRAY;
-    }
-
-    public void start() {
-        if (!enabled) return;
-        refreshTask = plugin.getServer().getScheduler().runTaskTimer(plugin, this::refreshAll, 20L, 40L);
-    }
-
-    public void stop() {
-        if (refreshTask != null) refreshTask.cancel();
-    }
-
-    public void refreshAll() {
-        for (Player player : plugin.getServer().getOnlinePlayers()) refresh(player);
-    }
-
-    public void refresh(Player player) {
-        if (!enabled || player == null) return;
-        String current = player.getPlayerListName();
-        String base = stripTeamTag(current);
-        String team = manager.teamTag(player);
-        player.setPlayerListName(team.isEmpty() ? base : base + marker + team);
-    }
-
-    public void refreshIfOnline(UUID uuid) {
-        Player player = plugin.getServer().getPlayer(uuid);
-        if (player != null) refresh(player);
-    }
-
-    private String stripTeamTag(String current) {
-        if (current == null) return "";
-        int index = current.lastIndexOf(marker);
-        return index >= 0 ? current.substring(0, index) : current;
-    }
+ private final JavaPlugin plugin;private final TeamManager manager;private final boolean enabled;
+ public TeamDisplay(JavaPlugin plugin,TeamManager manager){this.plugin=plugin;this.manager=manager;enabled=plugin.getConfig().getBoolean("settings.tablist-tag-enabled",true);}
+ public void start(){} public void stop(){} public void refreshAll(){for(Player p:plugin.getServer().getOnlinePlayers())refresh(p);}
+ public void refresh(Player p){if(!enabled)return;Team t=manager.currentTeam(p);if(t==null)return;Component name=gradient(t.getName(),t.getPrimary(),t.getSecondary()).decorate(TextDecoration.BOLD);p.playerListName(Component.text(p.getName()+" ").color(NamedTextColor.GRAY).append(Component.text("┃ ").color(NamedTextColor.DARK_GRAY)).append(name));}
+ private Component gradient(String s,String a,String b){TextColor c1=TextColor.fromHexString(a),c2=TextColor.fromHexString(b);if(c1==null||c2==null)return Component.text(s);TextComponent.Builder out=Component.text();int n=Math.max(1,s.length()-1);for(int i=0;i<s.length();i++){float f=(float)i/n;int r=(int)(c1.red()+(c2.red()-c1.red())*f),g=(int)(c1.green()+(c2.green()-c1.green())*f),bl=(int)(c1.blue()+(c2.blue()-c1.blue())*f);out.append(Component.text(String.valueOf(s.charAt(i))).color(TextColor.color(r,g,bl)));}return out.build();}
+ public void refreshIfOnline(java.util.UUID u){Player p=plugin.getServer().getPlayer(u);if(p!=null)refresh(p);}
 }
