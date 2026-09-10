@@ -6,3 +6,5 @@ settings:
   default-pvp: false
   tablist-tag-enabled: true
   tablist-tag-format: ' &8┃ &7{team}'
+
+  invite-expiry-minutes: 10
