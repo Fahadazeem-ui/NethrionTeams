@@ -29,4 +29,8 @@ public final class TeamManager {
  public synchronized TeamWar acceptWar(Player p){Team t=ownerTeam(p);TeamWar w=wars.values().stream().filter(x->x.status()==TeamWar.Status.PENDING&&x.targets().contains(t.getId())&&!x.accepted().contains(t.getId())).findFirst().orElse(null);if(w==null)return null;w.accept(t.getId());save();return w;}
  public synchronized List<TeamWar> wars(){return List.copyOf(wars.values());}
  public Set<String> colors(){return PALETTES.keySet();}
+ public synchronized void addOre(UUID player){Team t=findByPlayer(player);if(t==null)return;t.addOreMined(1);save();}
+ public synchronized void addPlayerKill(UUID player){Team t=findByPlayer(player);if(t==null)return;t.addPlayerKills(1);save();}
+ public synchronized void addMob(UUID player){Team t=findByPlayer(player);if(t==null)return;t.addMobKills(1);save();}
+ public synchronized void addTrade(UUID player){Team t=findByPlayer(player);if(t==null)return;t.addTrades(1);save();}
 }

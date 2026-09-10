@@ -4,6 +4,7 @@ import java.util.*;
 public final class Team {
  private final UUID id; private String name; private UUID owner; private final LinkedHashSet<UUID> members=new LinkedHashSet<>();
  private boolean pvpEnabled; private Location home; private String primary="#00E5FF", secondary="#7C4DFF";
+ private long oreMined; private long playerKills; private long mobKills; private long trades;
  public Team(UUID id,String name,UUID owner,boolean pvp){this.id=id;this.name=name;this.owner=owner;this.pvpEnabled=pvp;members.add(owner);}
  public UUID getId(){return id;} public String getName(){return name;} public void setName(String n){name=n;}
  public UUID getOwner(){return owner;} public void setOwner(UUID o){owner=o;members.add(o);}
@@ -13,4 +14,8 @@ public final class Team {
  public boolean addMember(UUID u){return members.add(u);} public boolean removeMember(UUID u){return members.remove(u);} public boolean contains(UUID u){return members.contains(u);}
  public String getPrimary(){return primary;} public String getSecondary(){return secondary;}
  public void setStyle(String p,String s){primary=p;secondary=s;}
+ public long getOreMined(){return oreMined;} public void addOreMined(long amount){oreMined+=amount;}
+ public long getPlayerKills(){return playerKills;} public void addPlayerKills(long amount){playerKills+=amount;}
+ public long getMobKills(){return mobKills;} public void addMobKills(long amount){mobKills+=amount;}
+ public long getTrades(){return trades;} public void addTrades(long amount){trades+=amount;}
 }
