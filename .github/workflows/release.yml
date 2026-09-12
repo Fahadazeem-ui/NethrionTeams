@@ -1,16 +1,16 @@
-name: Build NovaEssential
+name: Release NovaEssential
 
 on:
   push:
-    branches: [ "**" ]
-  pull_request:
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,9 +29,8 @@ jobs:
       - name: Build
         run: ./gradlew clean build --no-daemon --no-configuration-cache --refresh-dependencies
 
-      - name: Upload JAR
-        uses: actions/upload-artifact@v4
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: NovaEssential
-          path: build/libs/NovaEssential-*.jar
-          if-no-files-found: error
+          files: build/libs/NovaEssential-*.jar
+          generate_release_notes: true

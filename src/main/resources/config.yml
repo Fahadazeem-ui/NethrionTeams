@@ -1,8 +1,2 @@
-settings:
-  max-team-name-length: 16
-  min-team-name-length: 3
-  default-pvp: false
-  tablist-tag-enabled: true
-  invite-expiry-minutes: 10
-  war-invite-expiry-seconds: 90
-  war-duration-minecraft-days: 10
+spawn: {}
+known-players: {}
