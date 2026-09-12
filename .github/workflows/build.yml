@@ -1,4 +1,4 @@
-name: Build NovaEssential
+name: Build NethrionTeams
 
 on:
   push:
@@ -21,17 +21,16 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-          cache: gradle
 
-      - name: Ensure Gradle wrapper is executable
-        run: chmod +x gradlew
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Build
-        run: ./gradlew clean build --no-daemon --no-configuration-cache --refresh-dependencies
+        run: gradle clean build --no-daemon --no-configuration-cache --refresh-dependencies
 
-      - name: Upload JAR
+      - name: Upload NethrionTeams JAR
         uses: actions/upload-artifact@v4
         with:
-          name: NovaEssential
-          path: build/libs/NovaEssential-*.jar
+          name: NethrionTeams-JAR
+          path: build/libs/NethrionTeams-*.jar
           if-no-files-found: error
