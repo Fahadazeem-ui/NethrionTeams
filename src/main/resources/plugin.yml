@@ -1,59 +1,17 @@
-name: NovaEssential
-version: '${version}'
-main: com.novaessential.core.NovaEssentialPlugin
-author: NovaEssential
-api-version: '1.21.11'
-description: Clean teleport and moderation tools for Paper.
+name: NethrionTeams
+version: '2.6.0'
+main: com.nethrion.teams.NethrionTeamsPlugin
+api-version: '1.21'
 commands:
-  tpa:
-    description: Request to teleport to a player.
-    usage: /tpa <player>
-  tpahere:
-    description: Request a player to teleport to you.
-    usage: /tpahere <player>
-  tpaaccept:
-    description: Accept a teleport request.
-    usage: /tpaaccept [player]
-    aliases: [tpaccept]
-  tpacancel:
-    description: Cancel your outgoing teleport requests.
-    usage: /tpacancel
-  bed:
-    description: Teleport to your valid bed spawn.
-    usage: /bed
-  rtp:
-    description: Randomly teleport to a safe surface location.
-    usage: /rtp
-  spawn:
-    description: Teleport to server spawn.
-    usage: /spawn
-  setspawn:
-    description: Set server spawn.
-    usage: /setspawn
-    permission: novaessential.setspawn
-  ban:
-    description: Permanently ban a player.
-    usage: /ban <player> [reason...]
-    permission: novaessential.ban
-  tempban:
-    description: Temporarily ban a player.
-    usage: /tempban <player> <duration> <reason...>
-    permission: novaessential.tempban
-  pardon:
-    description: Remove a player ban.
-    usage: /pardon <player>
-    aliases: [unban]
-    permission: novaessential.pardon
+  team:
+    description: Manage teams
+  storage:
+    description: Open your team storage vaults
+    usage: /storage
+  war:
+    description: War reward commands
+    usage: /war claim
+softdepend: [ProtocolLib]
 permissions:
-  novaessential.setspawn:
-    description: Allows setting server spawn.
-    default: op
-  novaessential.ban:
-    description: Allows permanent player bans.
-    default: op
-  novaessential.tempban:
-    description: Allows temporary player bans.
-    default: op
-  novaessential.pardon:
-    description: Allows removing player bans.
-    default: op
+  nethrionteams.team:
+    default: true
