@@ -1,0 +1,14 @@
+package com.nethrion.teams;
+import java.util.*;import org.bukkit.*;import org.bukkit.block.*;import org.bukkit.inventory.DoubleChestInventory;import org.bukkit.inventory.Inventory;import org.bukkit.plugin.java.JavaPlugin;
+public final class VaultManager{
+ private final JavaPlugin plugin;private final TeamManager teams;private final VaultStorage storage;private final Map<UUID,TeamVault> vaults=new LinkedHashMap<>();
+ public VaultManager(JavaPlugin p,TeamManager t){plugin=p;teams=t;storage=new VaultStorage(p);vaults.putAll(storage.load());}
+ public synchronized void save(){storage.save(vaults.values());}
+ public synchronized List<TeamVault> teamVaults(UUID team){return vaults.values().stream().filter(v->v.teamId().equals(team)).toList();}
+ private boolean gold(Location l){return l.getBlock().getType()==Material.GOLD_BLOCK;}
+ private boolean valid(Chest a,Chest b){return a!=null&&b!=null&&gold(a.getLocation().clone().subtract(0,1,0))&&gold(b.getLocation().clone().subtract(0,1,0));}
+ public synchronized void tryRegister(org.bukkit.entity.Player p,Block changed){Team team=teams.currentTeam(p);if(team==null||!team.getOwner().equals(p.getUniqueId()))return;for(BlockFace f:List.of(BlockFace.NORTH,BlockFace.SOUTH,BlockFace.EAST,BlockFace.WEST)){Block x=changed.getRelative(f);if(changed.getState() instanceof Chest a&&x.getState() instanceof Chest b){Inventory inv=a.getInventory();if(inv instanceof DoubleChestInventory&&valid(a,b)&&vaults.values().stream().noneMatch(v->v.matches(a.getLocation())||v.matches(b.getLocation()))){TeamVault v=new TeamVault(UUID.randomUUID(),team.getId(),p.getUniqueId(),a.getLocation(),b.getLocation(),System.currentTimeMillis());vaults.put(v.id(),v);save();p.sendMessage(ChatColor.GOLD+"Team Vault registered: Chest "+teamVaults(team.getId()).size());return;}}}}
+ public synchronized void invalidateAt(Block b){Iterator<TeamVault> it=vaults.values().iterator();boolean dirty=false;while(it.hasNext()){TeamVault v=it.next();if(v.matches(b.getLocation())||v.left().clone().subtract(0,1,0).getBlock().equals(b)||v.right().clone().subtract(0,1,0).getBlock().equals(b)){it.remove();dirty=true;}}if(dirty)save();}
+ public synchronized Inventory inventory(TeamVault v){BlockState a=v.left().getBlock().getState(),b=v.right().getBlock().getState();if(!(a instanceof Chest ca)||!(b instanceof Chest cb)||!valid(ca,cb))return null;Inventory i=ca.getInventory();return i instanceof DoubleChestInventory?i:null;}
+ public synchronized void open(org.bukkit.entity.Player p,UUID id){Team t=teams.currentTeam(p);TeamVault v=vaults.get(id);if(t==null||v==null||!v.teamId().equals(t.getId())){p.sendMessage(ChatColor.RED+"Vault unavailable.");return;}Inventory i=inventory(v);if(i==null){p.sendMessage(ChatColor.RED+"Vault structure is no longer valid.");return;}p.openInventory(i);}
+}

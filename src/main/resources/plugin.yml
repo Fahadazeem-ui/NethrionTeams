@@ -5,6 +5,9 @@ api-version: '1.21'
 commands:
   team:
     description: Manage teams
+  storage:
+    description: Open your team storage vaults
+    usage: /storage
   war:
     description: War reward commands
     usage: /war claim
